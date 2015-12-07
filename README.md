@@ -5,6 +5,8 @@ It converts NBO's plot files (*.31 ~ *.40) into Molden format, which can be plot
 
 Examples of applications can be found in W. Zou, D. Nori-Shargh, and J. E. Boggs, On the Covalent Character of Rare Gas Bonding Interactions: A New Kind of Weak Interaction, J. Phys. Chem. A, 2013, 117(1), pp 207-212 at http://pubs.acs.org/doi/abs/10.1021/jp3104535
 
+Note that starting from version 6 (> 2014), NBO can generate Molden files by the keyword $NBO MOLDEN $END.
+
 ## Latest Version
 Version 1.0.3 (12/07/2015). Bug fix for d-, f-, and g-functions.
 
