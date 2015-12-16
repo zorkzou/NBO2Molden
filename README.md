@@ -7,8 +7,10 @@ Examples of applications can be found in W. Zou, D. Nori-Shargh, and J. E. Boggs
 
 Note that starting from version 6 (> 2014), NBO can generate Molden files by the keyword $NBO MOLDEN $END.
 
-## Latest Version
+## Recent Changes
 Version 1.0.3 (12/07/2015). Bug fix for d-, f-, and g-functions.
+
+Version 1.0.4 (12/16/2015). Plot file 41 by NBO6.
 
 ## Links
 NBO3: http://www.ccl.net/cca/software/SOURCES/FORTRAN/nbo/index.shtml

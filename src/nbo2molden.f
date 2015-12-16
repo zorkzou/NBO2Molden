@@ -6,6 +6,7 @@ c--- Tested for NBO 3.0, 5.x, and 6.x.
 c---
 c--- Updated:
 c--- Ver.1.0.3, 12/07/2015, Bug fix for d-, f-, and g-functions.
+c--- Ver.1.0.4, 12/16/2015, Plot file 41 by NBO6.
 c---
 c--- E-mail: qcband@gmail.com
 c------------------------------------------------------------------------------
@@ -14,7 +15,7 @@ c------------------------------------------------------------------------------
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       character*27 fmolden
       character*22 title
-      character*1 f
+      character*2 fext
 
       character*10 dt
       character*5 ver
@@ -26,19 +27,19 @@ c------------------------------------------------------------------------------
 c------------------------------------------------------------------------------
 c--- head
 c------------------------------------------------------------------------------
-      ver="1.0.3"
-      dt="12/07/2015"
+      ver="1.0.4"
+      dt="12/16/2015"
       call head(ver,dt)
 
 c------------------------------------------------------------------------------
 c--- define orbital type
 c------------------------------------------------------------------------------
-      call obrtyp(f,title)
+      call obrtyp(fext,title)
 
 c------------------------------------------------------------------------------
 c--- define NBO graphical data
 c------------------------------------------------------------------------------
-      call nbodata(f,fmolden)
+      call nbodata(fext,fmolden)
 
 c------------------------------------------------------------------------------
 c--- read *.31
@@ -99,7 +100,7 @@ c--- test
       if(tmp.ne.tag00)then
 c--- USCF or ROSCF
 c--- .32, and .33: no title (NBO-3 only), no occupations, no alpha/beta
-c--- .34-.36, and .38: no occupations
+c--- .34-.36, .38, and .40-.41: no occupations
         ititle=0
         iab=0
         iocc=0
@@ -852,10 +853,10 @@ c------------------------------------------------------------------------------
 c------------------------------------------------------------------------------
 c--- define orbital type
 c------------------------------------------------------------------------------
-      subroutine obrtyp(f,title)
+      subroutine obrtyp(fext,title)
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
-      parameter(ntp=9)
-      character*1 f
+      parameter(ntp=10)
+      character*2 fext
       character*22 nbo(ntp),title
       data nbo/
      *'PNAOs in the AO basis ',
@@ -866,10 +867,11 @@ c------------------------------------------------------------------------------
      *'NBOs in the AO basis  ',
      *'PNLMOs in the AO basis',
      *'NMLOs in the AO basis ',
-     *'MOs in the AO basis   '/
+     *'MOs in the AO basis   ',
+     *'NOs in the AO basis   '/
 
       write(*,"(/,
-     *' Which NBO file do you want to transform (1~',i1,'):')")ntp
+     *' Which NBO file do you want to convert (1~',i2,'):')")ntp
       do inbo=1,ntp
         if(inbo.eq.6)then
           write(*,800)inbo,nbo(inbo),inbo+31
@@ -878,38 +880,40 @@ c------------------------------------------------------------------------------
         end if
       end do
 100   write(*,"(' > ',$)")
-      read(*,"(a1)")f
+      read(*,"(a2)")fext
 c--- default
-      if(len_trim(f).eq.0)f='6'
-      i=ichar(f)
-      if(i.lt.49.or.i.gt.57)then
-        write(*,"(/,' Unknown selection. Please try again.',/)")
+      if(len_trim(fext).eq.0)fext=' 6'
+      read(fext,*,err=200)i
+      if(i.lt.1 .or. i.gt.ntp)then
+        write(*,900)
         goto 100
       end if
-      if(i.eq.57)then
-        f=char(48)
-      else
-        f=char(i+1)
-      end if
-      inbo=i-48
+
+      inbo=i+31
+      write(fext,"(i2)")inbo
       write(*,"(/,' You select',/,2x,i1,') ',a22,
-     *' ...... (*.',i2,')',/,1x,55('-'),//)")inbo,nbo(inbo),inbo+31
+     *' ...... (*.',i2,')',/,1x,55('-'),//)")i,nbo(i),inbo
 
       return
 
-800   format(2x,i1,') ',a22,' ...... (*.',i2,') <--- (Default)')
-820   format(2x,i1,') ',a22,' ...... (*.',i2,')')
+200   write(*,900)
+      goto 100
+
+800   format(2x,i2,') ',a22,' ...... (*.',i2,') <--- (Default)')
+820   format(2x,i2,') ',a22,' ...... (*.',i2,')')
+900   format(/,' Unknown selection. Please try again.',/)
+      return
       end
 
 c------------------------------------------------------------------------------
 c--- define NBO graphical data
-c--- f='2'~'9'; fmd: MOLDEN file name (length=leng<27)
+c--- fext='32'~'41'; fmd: MOLDEN file name (length=leng<27)
 c------------------------------------------------------------------------------
-      subroutine nbodata(f,fmd)
+      subroutine nbodata(fext,fmd)
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       character*23 fbs,fob
       character*20 ftmp
-      character*1 f
+      character*2 fext
       character*27 fmd
 
       ifbs=31
@@ -928,11 +932,7 @@ c------------------------------------------------------------------------------
         ftmp(lstr:lend)='FILE'
       end if
       fbs=ftmp(lstr:lend)//'.31'
-      if(f.eq.'0')then
-        fob=ftmp(lstr:lend)//'.40'
-      else
-        fob=ftmp(lstr:lend)//'.3'//f
-      end if
+      fob=ftmp(lstr:lend)//'.'//fext
       fmd=ftmp(lstr:lend)//'.molden'
       leng=lend-lstr+4
 
