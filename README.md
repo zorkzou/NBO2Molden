@@ -3,7 +3,7 @@
 # NBO2Molden
 It converts NBO's plot files (*.31 ~ *.41) into Molden format, which can be plotted using Molden, GabEdit, MacMolPlt, JMol, and so on. Only s, p, d, f, and g functions (either spherical or Cartesian) are supported by Molden.
 
-Examples of applications can be found in W. Zou, D. Nori-Shargh, and J. E. Boggs, On the Covalent Character of Rare Gas Bonding Interactions: A New Kind of Weak Interaction, J. Phys. Chem. A, 2013, 117(1), pp 207-212 at http://pubs.acs.org/doi/abs/10.1021/jp3104535 and the erratum J. Phys. Chem. A, 2016, 120(12), pp 2057 at http://pubs.acs.org/doi/abs/10.1021/acs.jpca.6b02603
+Examples of applications can be found in W. Zou, D. Nori-Shargh, and J. E. Boggs, On the Covalent Character of Rare Gas Bonding Interactions: A New Kind of Weak Interaction, [J. Phys. Chem. A, 2013, 117, 207-212](http://pubs.acs.org/doi/abs/10.1021/jp3104535) and the erratum [J. Phys. Chem. A, 2016, 120, 2057](http://pubs.acs.org/doi/abs/10.1021/acs.jpca.6b02603).
 
 Note that starting from version 6 (> 2014), NBO can generate Molden files by setting up $NBO MOLDEN=... $END.
 
